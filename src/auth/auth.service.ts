@@ -7,6 +7,8 @@ import { AuthDto } from './dto';
 import { PrismaClient } from '@prisma/client';
 import * as argon2 from 'argon2';
 import { UsersService } from 'src/users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 const prisma = new PrismaClient({
   omit: {
@@ -18,7 +20,11 @@ const prisma = new PrismaClient({
 
 @Injectable({})
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
   async signIn({ email, password }: { email: string; password: string }) {
     try {
       // find user
@@ -27,7 +33,11 @@ export class AuthService {
       const isPwMatched = await argon2.verify(hash, password);
       if (!isPwMatched) throw new UnauthorizedException('Wrong password');
 
-      return user;
+      // sign JWT and return access token
+      const payload = { sub: user.id, time: Date.now(), email };
+      const accessToken = await this.jwtService.signAsync(payload);
+
+      return { accessToken };
     } catch (error) {
       throw error;
     }
