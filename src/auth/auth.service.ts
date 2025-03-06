@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { AuthDto } from "./dto";
 import { PrismaClient } from "@prisma/client";
 import * as argon2 from 'argon2'
+import { UsersService } from "src/users/users.service";
 
 const prisma = new PrismaClient({
     omit: {
@@ -13,17 +14,13 @@ const prisma = new PrismaClient({
 
 @Injectable({})
 export class AuthService {
+    constructor(private userService: UsersService){
+
+    }
     async signin(dto: AuthDto) {
         try {
             // find user
-            const { hash, ...user } = await prisma.user.findUniqueOrThrow({
-                where: {
-                    email: dto.email
-                },
-                omit: {
-                    hash: false
-                },
-            })
+            const {hash, user} = await this.userService.findOne(dto)
             // compare password
             const isPwMatched = await argon2.verify(hash, dto.password)
             if (!isPwMatched) throw new ForbiddenException('Wrong password')
@@ -48,8 +45,5 @@ export class AuthService {
         } catch (error) {
             throw new ForbiddenException(error)
         }
-
-
-
     }
 }
