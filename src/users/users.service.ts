@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User } from '@prisma/client';
 import { AuthDto } from 'src/auth/dto';
 
 const prisma = new PrismaClient({
@@ -9,9 +9,13 @@ const prisma = new PrismaClient({
     },
   },
 });
+
 @Injectable()
 export class UsersService {
-  async findUser(email: string) {
+  async findUser(email: string): Promise<{
+    hash: User['hash'];
+    user: Omit<User, 'hash'>;
+  }> {
     try {
       // find user
       const { hash, ...user } = await prisma.user.findUniqueOrThrow({
