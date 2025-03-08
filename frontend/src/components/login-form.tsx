@@ -6,7 +6,7 @@ export default function LogInForm() {
         }
     }
 
-    return <form action={'/auth/signin'} method="post">
+    return <form action={'/api/auth/signin'} method="post">
         <label >
             Email:
             <input type="email" name="email" />
