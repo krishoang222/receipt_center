@@ -1,0 +1,14 @@
+{
+  "name": "what_is_this_jd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "fe:format": "prettier --write \"frontend/src/**/*.{ts,tsx,css}\"",
+    "be:format": "prettier --write \"backend/{src,test}/**/*.ts\"",
+    "format": "yarn be:format && yarn fe:format"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "prettier": "~3.4.2"
+  }
+}
