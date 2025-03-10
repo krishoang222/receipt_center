@@ -1,10 +1,10 @@
-import { useActionState, useRef } from 'react';
+import { ReactElement, useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 
-export default function LogInForm() {
+export default function LogInForm(): ReactElement {
   const [message, action] = useActionState(submitHandler, 'Waiting for log in');
 
-  async function submitHandler(_: any, formData: FormData) {
+  async function submitHandler(_: any, formData: FormData): Promise<string> {
     // TODO: do I need to add `user server` here? why?
     // only allow formData with string values (not File)
     if (!Array.from(formData).every(([_, value]) => typeof value === 'string'))
@@ -24,6 +24,7 @@ export default function LogInForm() {
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
+
       if (!res.ok) throw new Error(`${res.status}-${res.statusText}`);
 
       return 'Logged In Successfully';
@@ -32,7 +33,7 @@ export default function LogInForm() {
     }
   }
 
-  const SubmitButton = () => {
+  const SubmitButton = (): ReactElement => {
     // TODO: move SubmitButton to its own component to make use of useFormStatus()
     // (?) weird that useFormStatus's 'method' value return the value of the <form/> element, whose method prop is being overriden when action is a function. Meaning `method` always return 'get'
     const { pending } = useFormStatus();
