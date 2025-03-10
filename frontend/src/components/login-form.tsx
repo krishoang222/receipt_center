@@ -1,7 +1,27 @@
+import { useActionState, useRef } from 'react';
 import { useFormStatus } from 'react-dom';
 
 export default function LogInForm() {
+  const [_, action] = useActionState(submitHandler, null);
+
+  function submitHandler(_: any, formData: FormData) {
+    // only allow formData with string values (not File)
+    if (!Array.from(formData).every(([_, value]) => typeof value === 'string'))
+      throw new Error('Form only accepts string');
+
+    fetch('/api/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+
+      // TODO: not know why TypeScript not catch the new type of formData after adding the guard clause (to only allow string values)
+      body: new URLSearchParams(formData),
+    });
+  }
+
   const SubmitButton = () => {
+    // TODO: move SubmitButton to its own component to make use of useFormStatus()
     // (?) weird that useFormStatus's 'method' value return the value of the <form/> element, whose method prop is being overriden when action is a function. Meaning `method` always return 'get'
     const { pending } = useFormStatus();
     return (
@@ -10,31 +30,8 @@ export default function LogInForm() {
       </button>
     );
   };
-  const submitHandler = (formData: FormData) => {
-    const convertFormDatatoJSON = (
-      formData: FormData,
-    ): Record<string, string> => {
-      // Source: https://stackoverflow.com/questions/35325370/how-do-i-post-a-x-www-form-urlencoded-request-using-fetch
-      // convert to JSON in order to use with `new URLSearchParams()`
-      const formDataJSON: Record<string, string> = {};
-      for (const [key, value] of formData.entries()) {
-        // hard code .toString() with assumption this form only have text inputs
-        formDataJSON[key] = value.toString();
-      }
-      return formDataJSON;
-    };
-
-    fetch('/api/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(convertFormDatatoJSON(formData)),
-    });
-  };
-
   return (
-    <form action={submitHandler}>
+    <form action={action}>
       <label>
         Email:
         <input type="email" name="email" />
