@@ -1,6 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
-import { AuthDto } from 'src/auth/dto';
 
 const prisma = new PrismaClient({
   omit: {

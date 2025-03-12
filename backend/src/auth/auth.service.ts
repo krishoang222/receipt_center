@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthDto } from './dto';
+import { AuthSigninDto, AuthSignupDto } from './dto';
 import { PrismaClient, User } from '@prisma/client';
 import * as argon2 from 'argon2';
 import { UsersService } from 'src/users/users.service';
@@ -23,13 +23,9 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
   ) {}
-  async signIn({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<{ accessToken: string }> {
+  async signIn(dto: AuthSigninDto): Promise<{ accessToken: string }> {
+    const { email, password } = dto;
+
     try {
       // find user
       const { hash, user } = await this.userService.findUser(email);
@@ -45,16 +41,19 @@ export class AuthService {
       throw error;
     }
   }
-  async signUp(dto: AuthDto): Promise<Omit<User, 'hash'>> {
+  async signUp(dto: AuthSignupDto): Promise<Omit<User, 'hash'>> {
+    const { email, password, firstName } = dto;
+
     try {
-      const hash = await argon2.hash(dto.password);
+      const hash = await argon2.hash(password);
       const user = await prisma.user.create({
         data: {
-          email: dto.email,
-          firstName: dto.firstName,
+          email: email,
+          firstName: firstName,
           hash,
         },
       });
+
       return user;
     } catch (error) {
       throw new ForbiddenException(error);
