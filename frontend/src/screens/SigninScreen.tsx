@@ -1,5 +1,10 @@
+import { SetAccessTokenFunction } from '../App';
 import { SigninForm } from '../components/SigninForm';
 
-export function SigninScreen() {
-  return <SigninForm />;
+type SigninScreenProps = {
+  setAccessToken: SetAccessTokenFunction;
+};
+
+export function SigninScreen({ setAccessToken }: SigninScreenProps) {
+  return <SigninForm setAccessToken={setAccessToken} />;
 }

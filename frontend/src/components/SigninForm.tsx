@@ -1,7 +1,12 @@
 import { useActionState } from 'react';
 import { signin } from '../api';
+import { SetAccessTokenFunction } from '../App';
 
-export function SigninForm() {
+type SigninFormProps = {
+  setAccessToken: SetAccessTokenFunction;
+};
+
+export function SigninForm({ setAccessToken }: SigninFormProps) {
   const [message, action, isPending] = useActionState(
     submitHandler,
     "Let's log in",
@@ -20,7 +25,7 @@ export function SigninForm() {
     const { accessToken } = data;
 
     if (!!accessToken) {
-      localStorage.setItem('accessToken', accessToken);
+      setAccessToken(accessToken);
       return 'Login Sucessfully';
     } else {
       console.error({ data });
