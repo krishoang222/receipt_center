@@ -9,6 +9,13 @@ import * as argon2 from 'argon2';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
+
+type SignInResponse = {
+  accessToken: string
+}
+
+type SignUpResponse = Pick<User, 'email' | 'firstName' | 'id'>
+
 const prisma = new PrismaClient({
   omit: {
     user: {
@@ -22,8 +29,8 @@ export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
-  ) {}
-  async signIn(dto: AuthSigninDto): Promise<{ accessToken: string }> {
+  ) { }
+  async signIn(dto: AuthSigninDto): Promise<SignInResponse> {
     const { email, password } = dto;
 
     try {
@@ -41,7 +48,8 @@ export class AuthService {
       throw error;
     }
   }
-  async signUp(dto: AuthSignupDto): Promise<Omit<User, 'hash'>> {
+
+  async signUp(dto: AuthSignupDto): Promise<SignUpResponse> {
     const { email, password, firstName } = dto;
 
     try {
@@ -54,7 +62,9 @@ export class AuthService {
         },
       });
 
-      return user;
+      return {
+        email: user.email, firstName: user.firstName, id: user.id
+      };
     } catch (error) {
       throw new ForbiddenException(error);
     }
