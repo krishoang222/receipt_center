@@ -16,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/signin" element={<SigninScreen />} />
           <Route path="/signup" element={<SignupScreen />} />
         </Route>
+        <Route path='*' element={<p>There's nothing here: 404!</p>} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
