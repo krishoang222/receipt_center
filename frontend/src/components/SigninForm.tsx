@@ -1,50 +1,36 @@
 import { useActionState } from 'react';
-import { signup } from '../api';
+import { signin } from '../api';
 
-export function SignupForm() {
+export function SigninForm() {
   const [message, action, isPending] = useActionState(
     submitHandler,
-    "Let's sign up",
+    "Let's log in",
   );
 
   async function submitHandler(_: any, formData: FormData) {
     // TODO: do I need to add `user server` here? why?
     const email = formData.get('email');
     const password = formData.get('password');
-    const firstName = formData.get('firstName');
 
     // only allow formData with string values (not File)
-    if (
-      typeof email !== 'string' ||
-      typeof password !== 'string' ||
-      typeof firstName !== 'string'
-    )
+    if (typeof email !== 'string' || typeof password !== 'string')
       throw new Error('Form only accepts string');
 
-    const data = await signup({ email, password, firstName });
-    // (temp) use email to validate request success
-    const { email: res_email } = data;
+    const data = await signin({ email, password });
+    const { accessToken } = data;
 
-    if (!!res_email) {
-      return 'Sign Up Successfully';
+    if (!!accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+      return 'Login Sucessfully';
     } else {
       console.error({ data });
-      return 'Sign Up Failed';
+      return 'Login Failed';
     }
   }
 
   return (
     <form action={action} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2 ">
-        <div className="flex justify-between">
-          <label htmlFor="firstName">First Name:</label>
-          <input
-            type="text"
-            name="firstName"
-            required
-            className="bg-gray-50 border-gray-300 text-black"
-          />
-        </div>
         <div className="flex justify-between">
           <label htmlFor="email">Email:</label>
           <input
