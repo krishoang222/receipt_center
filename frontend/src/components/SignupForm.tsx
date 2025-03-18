@@ -34,7 +34,7 @@ export function SignupForm() {
   }
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={action} className="flex flex-col gap-4 w-[40vw] m-auto">
       <div className="flex flex-col gap-2 ">
         <div className="flex justify-between">
           <label htmlFor="firstName">First Name:</label>

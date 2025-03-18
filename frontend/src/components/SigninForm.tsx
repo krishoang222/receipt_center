@@ -1,12 +1,10 @@
 import { useActionState } from 'react';
 import { signin } from '../api';
-import { SetAccessTokenFunction } from '../App';
+import { useAuth } from '../context/authContext';
 
-type SigninFormProps = {
-  setAccessToken: SetAccessTokenFunction;
-};
+export function SigninForm() {
+  const { action: authAction } = useAuth();
 
-export function SigninForm({ setAccessToken }: SigninFormProps) {
   const [message, action, isPending] = useActionState(
     submitHandler,
     "Let's log in",
@@ -25,7 +23,7 @@ export function SigninForm({ setAccessToken }: SigninFormProps) {
     const { accessToken } = data;
 
     if (!!accessToken) {
-      setAccessToken(accessToken);
+      authAction.setAccessToken_(accessToken);
       return 'Login Sucessfully';
     } else {
       console.error({ data });
@@ -34,7 +32,7 @@ export function SigninForm({ setAccessToken }: SigninFormProps) {
   }
 
   return (
-    <form action={action} className="flex flex-col gap-4">
+    <form action={action} className="flex flex-col gap-4 w-[40vw] m-auto">
       <div className="flex flex-col gap-2 ">
         <div className="flex justify-between">
           <label htmlFor="email">Email:</label>
