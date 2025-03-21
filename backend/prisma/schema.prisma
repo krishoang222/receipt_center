@@ -8,10 +8,42 @@ datasource db {
 }
 
 model User {
-  id        Int    @id @default(autoincrement())
+  id        String @id @default(dbgenerated("(concat('usr_', gen_random_uuid()))::TEXT"))
   email     String @unique
-  firstName String
+  firstName String @map("first_name")
   hash      String
 
   @@map("users")
+}
+
+model Bill {
+  id           String  @id @default(dbgenerated("(concat('bil_', gen_random_uuid()))::TEXT"))
+  merchantName String  @map("merchant_name")
+  address      String?
+  wifiSSID     String? @map("wifi_ssid")
+  wifiPassword String? @map("wifi_password")
+  taxAmount    String? @map("tax_amount")
+  currency     String
+
+  // (temp) store price as string, as I don't have solution to process differently for differnt thousand/decimal separators
+  billDate   String @map("bill_date")
+  totalPrice String @map("total_price")
+
+  billItems BillItem[]
+
+  @@map("bills")
+}
+
+model BillItem {
+  id       String @id @default(uuid())
+  itemName String @map("item_name")
+
+  // (temp) store price as string, as I don't have solution to process differently for differnt thousand/decimal separators
+  quantity  String?
+  unitPrice String? @map("unit_price")
+
+  bill   Bill   @relation(fields: [billId], references: [id])
+  billId String
+
+  @@map("bill_items")
 }
