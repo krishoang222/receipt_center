@@ -1,11 +1,11 @@
 // Source: https://docs.nestjs.com/middleware + https://github.com/julien-sarazin/nest-playground/issues/1#issuecomment-682588094
 
-import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
+import { Injectable, NestMiddleware, ConsoleLogger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  private logger = new Logger('HTTP');
+  private logger = new ConsoleLogger('HTTP');
 
   use(request: Request, response: Response, next: NextFunction): void {
     const { ip, method, originalUrl: url, body } = request;
@@ -16,7 +16,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const { statusCode } = response;
 
       this.logger.log(
-        `request: ${method} ${url} ${statusCode}\nagent: ${userAgent} ${ip}\nbody: ${contentType} ${JSON.stringify(body)}`,
+        `\n--------\n-- Request ${method} ${url}\nAgent: ${userAgent} ${ip}\nContent Type: ${contentType}\nBody: ${JSON.stringify(body)}\n\n-- Response ${statusCode}\n--------`,
       );
     });
 

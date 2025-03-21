@@ -11,7 +11,7 @@ import { Request } from 'express';
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // extract toke from request's header
+    // extract token from request's header
     const request = context.switchToHttp().getRequest();
     const jwtToken = this.extractTokenFromHeader(request);
     if (!jwtToken) throw new UnauthorizedException();

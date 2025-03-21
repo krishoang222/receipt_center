@@ -6,7 +6,7 @@ import {
 import { AuthSigninDto, AuthSignupDto } from './dto';
 import { PrismaClient, User } from '@prisma/client';
 import * as argon2 from 'argon2';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 
 type SignInResponse = {
@@ -29,6 +29,7 @@ export class AuthService {
     private userService: UsersService,
     private jwtService: JwtService,
   ) {}
+
   async signIn(dto: AuthSigninDto): Promise<SignInResponse> {
     const { email, password } = dto;
 
@@ -44,7 +45,7 @@ export class AuthService {
 
       return { accessToken };
     } catch (error) {
-      throw error;
+      throw new ForbiddenException(error);
     }
   }
 

@@ -18,16 +18,16 @@ model User {
 
 model Bill {
   id           String  @id @default(dbgenerated("(concat('bil_', gen_random_uuid()))::TEXT"))
-  merchantName String  @map("merchant_name")
+  merchantName String? @map("merchant_name")
   address      String?
   wifiSSID     String? @map("wifi_ssid")
   wifiPassword String? @map("wifi_password")
   taxAmount    String? @map("tax_amount")
-  currency     String
+  currency     String?
 
   // (temp) store price as string, as I don't have solution to process differently for differnt thousand/decimal separators
-  billDate   String @map("bill_date")
-  totalPrice String @map("total_price")
+  billDate   String? @map("bill_date")
+  totalPrice String? @map("total_price")
 
   billItems BillItem[]
 
