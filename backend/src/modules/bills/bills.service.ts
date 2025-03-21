@@ -22,21 +22,8 @@ type JSONResponseFromClaude = {
 
 @Injectable()
 export class BillsService {
-  async addBill() {
+  async addBill(base64FromImage: string) {
     try {
-      const base64FromImage = fs.readFileSync(
-        path.resolve(
-          __dirname,
-          '..',
-          '..',
-          '..',
-          'src',
-          'sampleData',
-          `bill_english_grocery.jpeg`,
-        ),
-        'base64',
-      );
-
       // 1. call AI to scan bill and output json + csv
       const data = await callClaudeToGetJSONFromImage({
         base64FromImage,
