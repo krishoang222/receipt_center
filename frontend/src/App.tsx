@@ -4,6 +4,7 @@ import { SignupScreen } from './screens/SignupScreen';
 import { PrivateRoute } from './components/PrivateRoute';
 import { Header } from './components/Header';
 import { useAuth } from './context/authContext';
+import { BillScreen } from './screens/BillScreen';
 
 export type SetAccessTokenFunction = (accessToken_: string) => void;
 export type RemoveAccessTokenFunction = () => void;
@@ -37,6 +38,7 @@ export function App() {
                 <section>✅: This is private page for logged in user</section>
               }
             />
+            <Route path="/bills" element={<BillScreen />} />
           </Route>
         </Route>
         <Route path="*" element={<p>There's nothing here: 404!</p>} />

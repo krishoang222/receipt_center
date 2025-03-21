@@ -1,6 +1,9 @@
 import { useActionState } from 'react';
 import { signin } from '../api';
 import { useAuth } from '../context/authContext';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 export function SigninForm() {
   const { action: authAction } = useAuth();
@@ -32,31 +35,21 @@ export function SigninForm() {
   }
 
   return (
-    <form action={action} className="flex flex-col gap-4 w-[40vw] m-auto">
-      <div className="flex flex-col gap-2 ">
-        <div className="flex justify-between">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            name="email"
-            required
-            className="bg-gray-50 border-gray-300 text-black"
-          />
+    <form action={action} className="w-[30vw] m-auto">
+      <div className="flex flex-col gap-y-2 mb-4">
+        <div>
+          <Label htmlFor="email">Email:</Label>
+          <Input type="email" name="email" id="email" required />
         </div>
-        <div className="flex justify-between">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            name="password"
-            required
-            className="bg-gray-50 border-gray-300 text-black "
-          />
+        <div>
+          <Label htmlFor="password">Password:</Label>
+          <Input type="password" name="password" id="password" required />
         </div>
       </div>
-      <p>{message}</p>
-      <button type="submit" disabled={isPending}>
+      <pre>Status: {message}</pre>
+      <Button type="submit" disabled={isPending}>
         {isPending ? 'Submitting...' : 'Submit'}
-      </button>
+      </Button>
     </form>
   );
 }

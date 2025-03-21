@@ -39,3 +39,24 @@ export async function signup({
   const data = await res.json();
   return data;
 }
+
+type UploadBillImageParams = {
+  formData: FormData;
+  accessToken: string;
+};
+
+export async function uploadBillImage({
+  formData,
+  accessToken,
+}: UploadBillImageParams) {
+  const res = await fetch('/api/bills/upload', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    method: 'POST',
+    body: formData,
+  });
+
+  const data = await res.json();
+  return data;
+}
