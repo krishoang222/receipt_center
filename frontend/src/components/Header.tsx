@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from 'react-router';
 import { useAuth } from '../context/authContext';
-import { Button } from '@/components/ui/button';
 
 export function Header() {
   const { accessToken, action } = useAuth();
@@ -14,7 +13,7 @@ export function Header() {
         {accessToken ? (
           <>
             <NavLink to="/bills">Bills</NavLink>
-            <Button onClick={action.removeAccessToken}>Sign Out</Button>
+            <button onClick={action.removeAccessToken}>Sign Out</button>
           </>
         ) : (
           <>

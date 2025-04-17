@@ -17,6 +17,8 @@ export default defineConfig({
     },
 
   },
+
+  // Allow use "@" in import
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

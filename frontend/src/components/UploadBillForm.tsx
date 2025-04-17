@@ -1,8 +1,5 @@
 import { useActionState, useState } from 'react';
-import { uploadBillImage } from '../api';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
+import { uploadBillImage } from '@/api';
 import { useAuth } from '@/context/authContext';
 
 export function UploadBillForm() {
@@ -34,8 +31,8 @@ export function UploadBillForm() {
     <form action={action} className="w-[30vw] m-auto">
       <div className="flex flex-col gap-y-2 mb-4">
         <div>
-          <Label htmlFor="billImage">Bill:</Label>
-          <Input
+          <label htmlFor="billImage">Bill:</label>
+          <input
             type="file"
             name="billImage"
             id="billImage"
@@ -54,9 +51,9 @@ export function UploadBillForm() {
         ''
       )}
       <pre>Status: {message}</pre>
-      <Button type="submit" disabled={isPending}>
+      <button type="submit" disabled={isPending}>
         {isPending ? 'Submitting...' : 'Submit'}
-      </Button>
+      </button>
     </form>
   );
 }

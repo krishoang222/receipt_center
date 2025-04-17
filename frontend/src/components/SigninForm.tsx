@@ -1,9 +1,6 @@
 import { useActionState } from 'react';
 import { signin } from '../api';
 import { useAuth } from '../context/authContext';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
 
 export function SigninForm() {
   const { action: authAction } = useAuth();
@@ -38,18 +35,18 @@ export function SigninForm() {
     <form action={action} className="w-[30vw] m-auto">
       <div className="flex flex-col gap-y-2 mb-4">
         <div>
-          <Label htmlFor="email">Email:</Label>
-          <Input type="email" name="email" id="email" required />
+          <label htmlFor="email">Email:</label>
+          <input type="email" name="email" id="email" required />
         </div>
         <div>
-          <Label htmlFor="password">Password:</Label>
-          <Input type="password" name="password" id="password" required />
+          <label htmlFor="password">Password:</label>
+          <input type="password" name="password" id="password" required />
         </div>
       </div>
       <pre>Status: {message}</pre>
-      <Button type="submit" disabled={isPending}>
+      <button type="submit" disabled={isPending}>
         {isPending ? 'Submitting...' : 'Submit'}
-      </Button>
+      </button>
     </form>
   );
 }

@@ -23,7 +23,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    /* Shadcn Taildwind  */
+
+    // Allow use "@" for importing
     "baseUrl": ".",
     "paths": {
       "@/*": [

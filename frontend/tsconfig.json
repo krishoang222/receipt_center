@@ -8,13 +8,12 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  /* Shadcn Taildwind  */
+  // Allow use "@" in import
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
       ]
-    }
-  }
+    }}
 }

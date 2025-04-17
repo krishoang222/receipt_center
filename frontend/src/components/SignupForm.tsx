@@ -1,8 +1,5 @@
 import { useActionState } from 'react';
 import { signup } from '../api';
-import { Button } from './ui/button';
-import { Label } from './ui/label';
-import { Input } from './ui/input';
 
 export function SignupForm() {
   const [message, action, isPending] = useActionState(
@@ -40,22 +37,22 @@ export function SignupForm() {
     <form action={action} className="w-[30vw] m-auto">
       <div className="flex flex-col gap-y-2 mb-4">
         <div>
-          <Label htmlFor="firstName">First Name:</Label>
-          <Input type="text" name="firstName" id="firstName" required />
+          <label htmlFor="firstName">First Name:</label>
+          <input type="text" name="firstName" id="firstName" required />
         </div>
         <div>
-          <Label htmlFor="email">Email:</Label>
-          <Input type="email" name="email" id="email" required />
+          <label htmlFor="email">Email:</label>
+          <input type="email" name="email" id="email" required />
         </div>
         <div>
-          <Label htmlFor="password">Password:</Label>
-          <Input type="password" name="password" id="password" required />
+          <label htmlFor="password">Password:</label>
+          <input type="password" name="password" id="password" required />
         </div>
       </div>
       <pre>Status: {message}</pre>
-      <Button type="submit" disabled={isPending}>
+      <button type="submit" disabled={isPending}>
         {isPending ? 'Submitting...' : 'Submit'}
-      </Button>
+      </button>
     </form>
   );
 }

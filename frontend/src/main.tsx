@@ -4,14 +4,13 @@ import './index.css';
 import { App } from './App.tsx';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { AuthProvider } from './context/authContext.tsx';
-import { Button } from './components/ui/button.tsx';
 
 function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
   return (
     <div role="alert">
       <p>Something went wrong</p>
       <pre style={{ color: 'red' }}>{error.message}</pre>
-      <Button onClick={resetErrorBoundary}>Try again</Button>
+      <button onClick={resetErrorBoundary}>Try again</button>
     </div>
   );
 }
