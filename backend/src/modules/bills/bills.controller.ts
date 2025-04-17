@@ -27,6 +27,9 @@ export class BillsController {
     // TODO: add file upload limit > 5MB
     // TODO: handle upload multiple images
 
-    return this.billsService.addBill(file.buffer.toString('base64'));
+    return this.billsService.addBill(
+      file.buffer.toString('base64'),
+      file.mimetype,
+    );
   }
 }

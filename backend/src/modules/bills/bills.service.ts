@@ -22,12 +22,13 @@ type JSONResponseFromClaude = {
 
 @Injectable()
 export class BillsService {
-  async addBill(base64FromImage: string) {
+  async addBill(base64FromImage: string, mimeType: string) {
     try {
       // 1. call AI to scan bill and output json + csv
       const data = await callClaudeToGetJSONFromImage({
         base64FromImage,
-        guidePrompt: `You will be analyzing an image of a receipt and extracting specific data from it. The image of the receipt is provided below:\n\n\nYour task is to carefully examine the image and extract the following information:\n\n1. merchantName (string): The name of the merchant or business\n2. address (string): The full address of the merchant\n3. dateOfBill (string): The date of the transaction\n4. wifiName (string or null): The Wi-Fi name if provided on the receipt\n5. wifiPassword (string or null): The Wi-Fi password if provided on the receipt\n6. currency (string): The currency used in the transaction (e.g., VND, USD)\n7. billItems (csvString): A list of items purchased, their quantities, and prices\n8. billTotalPrice (string): The total price of the bill\n9. tax (string): The tax amount\n\nImportant instructions:\n- If any field is not found in the receipt image, use null as the value. Do not make up or infer any information that is not explicitly present in the image.\n- For the billItems field, create a CSV string with the format \"itemName|quantity|totalPrice\" for each item. Use \"|\" as the delimiter between fields and \"\\n\" to separate each item. For example: \"Item1|2|10\\nItem2|1|5\"\n\nAfter analyzing the image, provide your extracted data in the following JSON format:\n\n<extracted_data>\n{\n  \"merchantName\",\n  \"address\",\n  \"dateOfBill\",\n  \"wifiName\",\n  \"wifiPassword\",\n  \"currency\",\n  \"billItems\",\n  \"billTotalPrice\",\n  \"tax\"\n}\n</extracted_data>\n\nRemember to use null for any fields that are not found in the receipt image, and do not invent or assume any information. Provide only the json data that you can clearly extract from the given image, don't add any explanation.`,
+        mimeType,
+        guidePrompt: `You will analyzing an image of a receipt and extracting specific data from it. The image of the receipt is provided below:\n\n\nYour task is to carefully examine the image and extract the following information:\n\n1. merchantName (string): The name of the merchant or business\n2. address (string): The full address of the merchant\n3. dateOfBill (string): The date of the transaction\n4. wifiName (string or null): The Wi-Fi name if provided on the receipt\n5. wifiPassword (string or null): The Wi-Fi password if provided on the receipt\n6. currency (string): The currency used in the transaction (e.g., VND, USD)\n7. billItems (csvString): A list of items purchased, their quantities, and prices\n8. billTotalPrice (string): The total price of the bill\n9. tax (string): The tax amount\n\nImportant instructions:\n- If any field is not found in the receipt image, use null as the value. Do not make up or infer any information that is not explicitly present in the image.\n- For the billItems field, create a CSV string with the format \"itemName|quantity|totalPrice\" for each item. Use \"|\" as the delimiter between fields and \"\\n\" to separate each item. For example: \"Item1|2|10\\nItem2|1|5\"\n\nAfter analyzing the image, provide your extracted data in the following JSON format:\n\n<extracted_data>\n{\n  \"merchantName\",\n  \"address\",\n  \"dateOfBill\",\n  \"wifiName\",\n  \"wifiPassword\",\n  \"currency\",\n  \"billItems\",\n  \"billTotalPrice\",\n  \"tax\"\n}\n</extracted_data>\n\nRemember to use null for any fields that are not found in the receipt image, and do not invent or assume any information. Provide only the json data that you can clearly extract from the given image, don't add any explanation.`,
       });
 
       const billItemsArray = parseCSVBillItemsToArrayObject(data.billItems);
@@ -87,9 +88,11 @@ function parseCSVBillItemsToArrayObject(csvString: string) {
 
 async function callClaudeToGetJSONFromImage({
   base64FromImage,
+  mimeType,
   guidePrompt,
 }: {
   base64FromImage: string;
+  mimeType: string;
   guidePrompt: string;
 }): Promise<JSONResponseFromClaude> {
   if (!process.env.ANTHROPIC_API_KEY)
@@ -111,7 +114,7 @@ async function callClaudeToGetJSONFromImage({
             type: 'image',
             source: {
               type: 'base64',
-              media_type: 'image/jpeg',
+              media_type: mimeType,
               data: base64FromImage,
             },
           },
