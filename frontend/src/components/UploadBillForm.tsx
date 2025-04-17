@@ -1,6 +1,7 @@
 import { useActionState, useState } from 'react';
 import { uploadBillImage } from '@/api';
 import { useAuth } from '@/context/authContext';
+import { Button, FileInput, Label } from 'flowbite-react';
 
 export function UploadBillForm() {
   const { accessToken } = useAuth();
@@ -31,9 +32,8 @@ export function UploadBillForm() {
     <form action={action} className="w-[30vw] m-auto">
       <div className="flex flex-col gap-y-2 mb-4">
         <div>
-          <label htmlFor="billImage">Bill:</label>
-          <input
-            type="file"
+          <Label htmlFor="billImage">Bill:</Label>
+          <FileInput
             name="billImage"
             id="billImage"
             required
@@ -50,10 +50,12 @@ export function UploadBillForm() {
       ) : (
         ''
       )}
-      <pre>Status: {message}</pre>
-      <button type="submit" disabled={isPending}>
-        {isPending ? 'Submitting...' : 'Submit'}
-      </button>
+      <div className="flex flex-col">
+        <pre>Status: {message}</pre>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? 'Submitting...' : 'Submit'}
+        </Button>
+      </div>
     </form>
   );
 }

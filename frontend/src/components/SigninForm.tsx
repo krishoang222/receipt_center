@@ -1,6 +1,7 @@
 import { useActionState } from 'react';
 import { signin } from '../api';
 import { useAuth } from '../context/authContext';
+import { Button, Label, TextInput } from 'flowbite-react';
 
 export function SigninForm() {
   const { action: authAction } = useAuth();
@@ -35,18 +36,20 @@ export function SigninForm() {
     <form action={action} className="w-[30vw] m-auto">
       <div className="flex flex-col gap-y-2 mb-4">
         <div>
-          <label htmlFor="email">Email:</label>
-          <input type="email" name="email" id="email" required />
+          <Label htmlFor="email">Email:</Label>
+          <TextInput type="email" name="email" id="email" required />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
-          <input type="password" name="password" id="password" required />
+          <Label htmlFor="password">Password:</Label>
+          <TextInput type="password" name="password" id="password" required />
         </div>
       </div>
-      <pre>Status: {message}</pre>
-      <button type="submit" disabled={isPending}>
-        {isPending ? 'Submitting...' : 'Submit'}
-      </button>
+      <div className="flex flex-col">
+        <pre className="text-center">Status: {message}</pre>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? 'Submitting...' : 'Submit'}
+        </Button>
+      </div>
     </form>
   );
 }

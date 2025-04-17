@@ -22,8 +22,8 @@ export function Header() {
           </>
         )}
       </nav>
-      <div className="mx-[10vw] text-center">
-        <h1 className="text-6xl font-bold mb-7">What is this bill?</h1>
+      <div className="mx-[10vw]">
+        <h1 className="text-6xl text-center font-bold mb-7">Receipt Center</h1>
         <div>
           <Outlet />
         </div>

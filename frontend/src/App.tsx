@@ -18,7 +18,10 @@ export function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Header />}>
-          <Route index element={<p>This is home screen at '/'</p>} />
+          <Route
+            index
+            element={<p className="text-center">This is home screen at '/'</p>}
+          />
           <Route
             path="/signin"
             element={
@@ -35,7 +38,9 @@ export function App() {
             <Route
               path="/user"
               element={
-                <section>✅: This is private page for logged in user</section>
+                <p className="text-center">
+                  ✅: This is private page for logged in user
+                </p>
               }
             />
             <Route path="/bills" element={<BillScreen />} />
