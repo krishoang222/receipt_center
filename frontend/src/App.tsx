@@ -23,27 +23,43 @@ export function App() {
             element={<p className="text-center">This is home screen at '/'</p>}
           />
           <Route
-            path="/signin"
+            path="signin"
             element={
-              accessToken ? <Navigate to="/user" replace /> : <SigninScreen />
+              accessToken ? (
+                <Navigate to="/user/receipts/inbox" replace />
+              ) : (
+                <SigninScreen />
+              )
             }
           />
           <Route
-            path="/signup"
+            path="signup"
             element={
-              accessToken ? <Navigate to="/user" replace /> : <SignupScreen />
+              accessToken ? (
+                <Navigate to="/user/receipts/inbox" replace />
+              ) : (
+                <SignupScreen />
+              )
             }
           />
           <Route element={<PrivateRoute />}>
-            <Route
-              path="/user"
-              element={
-                <p className="text-center">
-                  ✅: This is private page for logged in user
-                </p>
-              }
-            />
-            <Route path="/bills" element={<BillScreen />} />
+            <Route path="user">
+              <Route
+                index
+                element={
+                  <p className="text-center">
+                    ✅: This is private page for logged in user
+                  </p>
+                }
+              />
+              <Route path="receipts">
+                <Route
+                  path="inbox"
+                  element={<p className="text-center">This is `inbox` page</p>}
+                />
+                <Route path="upload" element={<BillScreen />} />
+              </Route>
+            </Route>
           </Route>
         </Route>
         <Route path="*" element={<p>There's nothing here: 404!</p>} />
