@@ -40,7 +40,12 @@ export class AuthService {
       const isPwMatched = await argon2.verify(hash, password);
       if (!isPwMatched) throw new UnauthorizedException('Wrong password');
       // sign JWT and return access token
-      const payload = { sub: user.id, time: Date.now(), email };
+      const payload = {
+        sub: user.id,
+        time: Date.now(),
+        email,
+        firstName: user.firstName,
+      };
       const accessToken = await this.jwtService.signAsync(payload);
 
       return { accessToken };

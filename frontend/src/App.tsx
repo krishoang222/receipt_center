@@ -5,6 +5,7 @@ import { PrivateRoute } from './components/PrivateRoute';
 import { Header } from './components/Header';
 import { useAuth } from './context/authContext';
 import { BillScreen } from './screens/BillScreen';
+import { ReceiptInboxScreen } from './screens/ReceiptInboxScreen';
 
 export type SetAccessTokenFunction = (accessToken_: string) => void;
 export type RemoveAccessTokenFunction = () => void;
@@ -53,10 +54,7 @@ export function App() {
                 }
               />
               <Route path="receipts">
-                <Route
-                  path="inbox"
-                  element={<p className="text-center">This is `inbox` page</p>}
-                />
+                <Route path="inbox" element={<ReceiptInboxScreen />} />
                 <Route path="upload" element={<BillScreen />} />
               </Route>
             </Route>
