@@ -18,7 +18,9 @@ export function Header() {
             {/* TODO: replace button_link wrapper to link only with style as button*/}
 
             <Link to="/user/receipts/upload">
-              <Button outline>Add Receipt</Button>
+              <Button outline size="xs">
+                Add Receipt
+              </Button>
             </Link>
             <div className="flex items-center gap-1 justify-center border-l-2 pl-2">
               <svg

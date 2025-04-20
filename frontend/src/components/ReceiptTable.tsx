@@ -6,6 +6,10 @@ import {
   TableHead,
   TableHeadCell,
   TableRow,
+  Badge,
+  Button,
+  Dropdown,
+  DropdownItem,
 } from 'flowbite-react';
 
 const SAMPLE_FIELDS = [
@@ -100,8 +104,17 @@ export function ReceiptTable() {
               <TableCell className="p-4">
                 <Checkbox />
               </TableCell>
-              <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                {dataPoint.status}
+              <TableCell className="whitespace-nowrap">
+                <Badge
+                  className="w-fit"
+                  color={
+                    { Ready: 'success', 'To Review': 'warning' }[
+                      dataPoint.status
+                    ] || 'gray'
+                  }
+                >
+                  {dataPoint.status}
+                </Badge>
               </TableCell>
               <TableCell>
                 {new Intl.DateTimeFormat('en-UK', {
@@ -111,18 +124,45 @@ export function ReceiptTable() {
                 }).format(dataPoint.date)}
               </TableCell>
               <TableCell>{dataPoint.supplier}</TableCell>
-              <TableCell>{dataPoint.category}</TableCell>
+              <TableCell>
+                {/* TODO: add handle click */}
+                <Dropdown
+                  // Source for button's overflow ellipsis: https://stackoverflow.com/a/9905793/14733188
+                  label={
+                    <span className="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                      {dataPoint.category}
+                    </span>
+                  }
+                  outline
+                  color="gray"
+                  size="xs"
+                  className="w-full max-w-[200px]"
+                >
+                  <DropdownItem>
+                    <span className="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                      493 - Travel - National
+                    </span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span className="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                      760 - Motor Vehicles
+                    </span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span className="overflow-ellipsis overflow-hidden whitespace-nowrap">
+                      325 - Direct Expense
+                    </span>
+                  </DropdownItem>
+                </Dropdown>
+              </TableCell>
               <TableCell>
                 {dataPoint.currency + ' ' + dataPoint.total.toFixed(2)}
               </TableCell>
               <TableCell>{dataPoint.note}</TableCell>
-              <TableCell>
-                <a
-                  href="#"
-                  className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                >
+              <TableCell className="whitespace-nowrap">
+                <Button color="cyan" outline size="xs" className="rounded-sm ">
                   {dataPoint.action}
-                </a>
+                </Button>
               </TableCell>
             </TableRow>
           ))}
