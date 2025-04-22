@@ -271,6 +271,8 @@ export function ReceiptTable() {
                   </Label>
                   <Select
                     id="category"
+                    className="text-sm"
+                    sizing="sm"
                     defaultValue={
                       SAMEPLE_OPTIONS_FOR_CATEGORY[rowIndex] ??
                       SAMEPLE_OPTIONS_FOR_CATEGORY[0]
